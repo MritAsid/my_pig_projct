@@ -1,0 +1,243 @@
+/* search */
+
+.search .box {
+    height: 100%;
+    margin-left: 10px;
+    width: 40%;
+    padding: 10px 0px;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: center;
+    background-color: #181a1e;
+    border: 2px solid #1976D2;
+    border-radius: 10px;
+}
+.search .box form {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+.search .box  label {
+  margin-left: 10px;
+    font-size: 10px;
+    padding-right: 0px;
+    width: 30%;
+    margin-bottom: 0;
+}
+.search .box .lister {
+    position: relative;
+    width: 60%;
+}
+
+.search .box input {
+    border-radius: 6px;
+    padding: 2px 0;
+    border: 2px solid #1976D2;
+    padding-right: 10px;
+    outline: none;
+    font-size: 14px;
+    width: 100%;
+}
+
+.search .box #autocomplete {
+    background-color: white;
+    position: absolute;
+    /* border: 2px solid #1976D2; */
+    z-index: 1000;
+    max-height: 100px;
+    overflow-y: auto;
+    width: 100%;
+    margin-top: -3px;
+    border-top: none;
+    /* top: 57%; */
+    border-radius: 6px;
+}
+
+.search .lister .autocomplete-item {
+    padding: 2px;
+    cursor: pointer;
+    font-size: 9px;
+    border-bottom: 0.8px solid black;
+    text-align: start;
+    color: black;
+    font-weight: 600;
+    background-color: white;
+    cursor: pointer;
+}
+
+.search form button {
+    padding: 4px 2px;
+    font-size: 12px;
+    border: 1px solid white;
+    border-radius: 6px;
+    color: white;
+    font-weight: 800;
+    width: 30%;
+    margin: 0 auto;
+    background-color: #1976D2;
+    cursor: pointer;
+    box-shadow: 0 0 2px 1px azure;
+        margin: 100px auto 0;
+}
+
+/* .search .box  .addand { */
+     /* width: 100%;
+    height: 30%;
+    padding: 4px; */
+    /* border-bottom: 2px solid #1976D2; */
+    /* border-top: 2px solid #1976D2; */
+    /* display: block; */
+    /* margin: 10px 0 0; */
+/* } */
+
+/* .search  */
+.search .addand h5,
+.search  h5 {
+   font-size: 12px;
+    width: 100%;
+    text-align: start;
+    padding-right: 8px;
+    margin: 4px 0;
+    border: none;
+
+}
+/* .search .box .totel { */
+    /* width: 100%; */
+    /* text-align: start; */
+    /* padding-right: 10px; */
+    /* padding-top: 10px; */
+    /* padding: 4px;
+    font-size: 12px;
+    padding-right: 8px;
+    margin: 4px 0; */
+
+
+    /* margin-bottom: 10px; */
+    /* border-bottom: 2px solid #1976D2; */
+/* } */
+.search .bottom {
+      padding: 4px 2px;
+    font-size: 12px;
+    border: 1px solid white;
+    border-radius: 6px;
+    color: white;
+    font-weight: 800;
+    width: 30%;
+    background-color: #1976D2;
+    cursor: pointer;
+ box-shadow: 0 0 2px 1px azure;
+    margin: 100px auto 0;
+}
+
+
+
+.modal-content label {
+    width: 25%;
+    display: inline-block;
+    margin: 8px 0;
+    text-align: center;
+}
+
+
+.modal-content input {
+    width: 70%;
+    padding: 4px;
+    border-radius: 8px;
+    border: 2px solid #1976D2;
+    padding-right: 8px;
+    font-size: 14px;
+    font-weight: 800;
+    margin: 10px 0;
+}
+.modal-content #editDetails {
+    font-size: 12px;
+}
+.box label p ,
+.box h5 p,
+.box h5 span,
+.modal-content label p,
+.modal-content p span {
+    display: inline;
+    margin-right: 10px;
+    font-size: 14px;
+    color: #E91E63;
+    font-weight: 800;
+}
+.box h5 span {
+    margin-right: 10px;
+}
+
+/* .modal-content input:nth-child(2) {
+    color: red;
+
+} */
+
+.search .box .addand h3 span {
+    font-size: 14px;
+}
+
+#totalAdditions {
+    color: #FF9800;
+}
+#totalPayments {
+    color: #009688;
+}
+.modal-content .button {
+        display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding: 0 12px;
+}
+h3 span {
+    color: #E91E63;
+    margin: 0 10px;
+    font-size: 14px;
+}
+
+.modal-content .button button {
+    padding: 4px 2px;
+    font-size: 12px;
+    border: 1px solid white;
+    border-radius: 6px;
+    color: white;
+    font-weight: 800;
+    width: 18%;
+    /* margin: 0 auto; */
+    background-color: #1976D2;
+    cursor: pointer;
+    box-shadow: 0 0 2px 1px azure;
+}
+
+
+
+
+.modal-content {
+    padding: 10px;
+    border-radius: 10px;
+    width: 400px;
+    text-align: start;
+    background-color: #25252c;
+    border: 2px solid #1976D2;
+}
+.modal-content h2 {
+    font-size: 14px;
+    margin: 6px 0;
+    background-color: #181a1e;
+    border: 2px solid #1976D2;
+    width: 50%;
+    margin: 8px auto;
+    border-radius: 8px;
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+

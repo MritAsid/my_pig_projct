@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إضافة أو حذف عميل</title>
+    <link rel="stylesheet" href="css/three.css">
+    <link rel="stylesheet" href="css/add_delete.css">
+</head>
+<body>
+
+<header>
+    <h1>إضافة عميل</h1>
+    <ul>
+        <li style="background-color: #C2185B;"><a href="index.html">الصفحة الرئيسية</a></li>
+        <li><a href="search.html">البحث عن عميل</a></li>
+        <li><a href="transaction.html">إضافة أو تسديد مبلغ</a></li>
+    </ul>
+</header>
+
+<div class="container add_delete">
+    <div class="box">
+        <h4 class="green">إضافة عميل</h4>
+        <form id="addCustomerForm">
+            <label for="name">اسم العميل<p>:</p></label>
+            <input type="text" id="name" required>
+            <button type="submit" class="green">إضافة عميل</button>
+        </form>
+
+        <h4 class="red">حذف عميل</h4>
+        <form id="deleteCustomerForm">
+            <label for="deleteName">اسم العميل  <p>:</p></label>
+            <div class="lister_neam">
+                <input type="text" id="deleteName" required>
+                <div id="autocomplete"></div>
+            </div>
+            <button type="submit" class="red">حذف عميل</button>
+        </form>
+    </div>
+
+    <!-- إضافة جدول عرض العملاء والمبالغ المستحقة -->
+<!-- <div class="balance-table  box">
+    <h2>جدول الأرصدة</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>اسم العميل</th>
+                <th>المبلغ المستحق</th>
+            </tr>
+        </thead>
+        <tbody id="balanceTableBody"></tbody>
+    </table>
+
+</div> -->
+
+
+<div class="balance-table tables">
+    <h2>جدول الأرصدة</h2>
+    <table>
+        <thead>
+            <tr>
+                <th> الرقم </th>
+                <th>اسم العميل</th>
+                <th>المبلغ المستحق</th>
+            </tr>
+        </thead>
+        <tbody id="balanceTableBody"></tbody>
+    </table>
+</div>
+
+
+<script>
+// إضافة عميل
+document.getElementById('addCustomerForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const name = document.getElementById('name').value.trim();
+    
+    fetch('/add-customer', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name: name }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+    })
+    .catch(error => {
+        console.error('حدث خطأ:', error);
+        alert('حدث خطأ أثناء إضافة العميل');
+    });
+});
+
+// حذف عميل
+document.getElementById('deleteCustomerForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const name = document.getElementById('deleteName').value.trim();
+    
+    fetch('/delete-customer', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name: name }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+    })
+    .catch(error => {
+        console.error('حدث خطأ:', error);
+        alert('حدث خطأ أثناء حذف العميل');
+    });
+});
+
+// الإكمال التلقائي لحقل حذف العميل
+document.getElementById('deleteName').addEventListener('input', function () {
+    const query = this.value.toLowerCase();
+    const autocompleteDiv = document.getElementById('autocomplete');
+    autocompleteDiv.innerHTML = '';
+
+    if (query) {
+        fetch('/api/get-customers')
+            .then(response => response.json())
+            .then(customers => {
+                const filteredCustomers = customers.filter(name => name.toLowerCase().includes(query));
+                filteredCustomers.forEach(customer => {
+                    const item = document.createElement('div');
+                    item.textContent = customer;
+                    item.classList.add('autocomplete-item');
+                    item.addEventListener('click', function () {
+                        document.getElementById('deleteName').value = customer;
+                        autocompleteDiv.innerHTML = '';
+                    });
+                    autocompleteDiv.appendChild(item);
+                });
+            })
+            .catch(error => console.error('Error fetching customers:', error));
+    }
+});
+
+// جلب بيانات العملاء وعرضها في الجدول
+// document.addEventListener('DOMContentLoaded', function() {
+//     fetch('/clients')
+//         .then(response => response.json())
+//         .then(clients => {
+//             if (!Array.isArray(clients)) {
+//                 console.error('Unexpected response format:', clients);
+//                 alert('لم يتم جلب بيانات العملاء بالشكل المتوقع.');
+//                 return;
+//             }
+            
+//             const tbody = document.getElementById('clientTable').querySelector('tbody');
+//             tbody.innerHTML = ''; // مسح أي بيانات موجودة
+
+//             clients.forEach(client => {
+//                 const row = document.createElement('tr');
+//                 row.innerHTML = `
+//                     <td>${client.name}</td>
+//                     <td>${client.amount_due}</td>
+//                 `;
+//                 tbody.appendChild(row);
+//             });
+//         })
+//         .catch(error => console.error('Error fetching client data:', error));
+// });
+
+
+
+</script>
+
+
+<!-- <script>
+    // جلب الأرصدة وعرضها في الجدول
+    fetch('/api/get-client-balances')
+        .then(response => response.json())
+        .then(balances => {
+            const tableBody = document.getElementById('balanceTableBody');
+            balances.forEach(client => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${client.client_name}</td><td>${client.balance}</td>`;
+                tableBody.appendChild(row);
+            });
+        })
+        .catch(error => console.error('Error fetching client data:', error));
+</script> -->
+
+
+<script>
+    // جلب الأرصدة وعرضها في الجدول
+    fetch('/api/get-client-balances')
+        .then(response => response.json())
+        .then(balances => {
+            const tableBody = document.getElementById('balanceTableBody');
+            tableBody.innerHTML = ''; // تفريغ الجدول قبل العرض
+            balances.forEach((client, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${client.client_name}</td>
+                    <td>${client.balance}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        })
+        .catch(error => console.error('Error fetching client data:', error));
+</script>
+
+</body>
+</html>

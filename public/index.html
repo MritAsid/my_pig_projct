@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الصفحة الرئيسية</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header>
+        <h1>الصفحة الرئيسية</h1>
+    </header>
+
+    <section>
+<div class="Numbr">
+  عدد العملاء :
+        <p id="customerCount">عدد العملاء: جارٍ التحميل...</p>
+
+</div>
+        <p>  مرحباً بك في نظام إدارة العملاء  </p>
+
+    </section>
+<div class="container">
+    <ul>
+        <li><a href="add_delete.html"> إدارة  العملاء </a></li>
+        <li><a href="transaction.html"> إدارة حسابات العملاء   </a></li>
+        <li><a href="search.html">  تفاصيل حسابات العملاء </a></li>
+        <li><a href="workTypes.html"> إدارة  الأعمال</a></li>
+        <li><a href="products22.html"> اضافة ty مالية  </a></li>
+        <li><a href="products.html"> اضافة معاملات نقد  </a></li>
+    </ul>
+<script>
+    async function updateCustomerCount() {
+  try {
+    const response = await fetch("/get-customer-count");
+    if (!response.ok) {
+      throw new Error("خطأ في جلب عدد العملاء");
+    }
+    const data = await response.json();
+    document.getElementById("customerCount").innerText = `${data.count}`;
+  } catch (error) {
+    console.error(error);
+    document.getElementById("customerCount").innerText = "فشل في جلب عدد العملاء";
+  }
+}
+
+// استدعاء الدالة لتحديث العدد عند تحميل الصفحة
+window.onload = updateCustomerCount;
+
+</script>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,215 @@
+.box input {
+    margin: 10px 0;
+}
+
+.box form button {
+  margin: 30px auto;
+}
+#workList {
+    width: 100%;
+}
+
+table  tr th {
+ background-color: #1976D2;
+    color: white;
+    border-radius: 4px;
+    font-size: 10px;
+
+}
+
+table  tr th:first-child {
+  background-color: #E91E63;
+}
+
+table  tr th:first-child {
+  width: 16%;
+}
+
+table  tr th:nth-child(2){
+  width: 14%;
+}
+
+table  tr th:nth-child(3){
+  width: 40%;
+}
+
+
+
+table  tr th:last-child {
+  width: 16%;
+}
+
+
+table  tr td {
+    color: #181a1e;
+    background-color: white;
+    border-radius: 2px;
+    font-size: 10px;
+    font-weight: 600;
+}
+   table  tr td:first-child {      
+    font-size: 10px;
+    background-color: #25252c;
+    padding-left: 0px;
+    text-align: start;
+}
+table  tr td:nth-child(3){
+font-size: 8px;
+    text-align: start;
+    padding-right: 2px;
+}
+   
+   
+   table  tr td:first-child button {      
+
+margin: 4px auto;
+   }
+
+   /* ======================================== */
+
+
+   /* style.css */
+body {
+    /* font-family: Arial, sans-serif; */
+    /* direction: rtl; */
+    /* text-align: right; */
+}
+
+#form-container {
+    margin-bottom: 20px;
+}
+
+#invoice-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#invoice-table th, #invoice-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+#total-container {
+    margin-top: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+
+.neno {
+  display: none;
+}
+
+
+
+
+
+.work .tables table {
+  width: 100%;
+  /* padding-right: 50px; */
+}
+.work table thead tr th {
+    background-color: #1976D2;
+    color: white;
+    border-radius: 4px;
+    font-size: 10px;
+    width: 25%;
+
+}
+table thead tr th:first-child {
+  width: 40%;
+}
+.work table tbody tr td {
+    /* color: #181a1e; */
+    background-color: white;
+    /* border-radius: 2px;
+    font-size: 10px;
+    font-weight: 600; */
+}
+  /* .work table tbody tr td:first-child {      
+  width: 40%;
+} */
+ table thead tr th:nth-child(3){
+  width: 10%;
+}
+.work .box button{
+  margin: 20px;
+
+}
+.work .box button:last-child {
+  margin: 150px auto;
+    font-size: 18px;
+    font-weight: 800;
+    width: 74%;
+    background-color: #E91E63;
+}
+
+#finishDialog {
+    background-color: #25252c;
+    color: white;
+    width: 500px;
+    height: 400px;
+    border-radius: 10px;
+    border: 2px solid #1976D2;
+    /* display: flex; */
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+h3 {
+    width: 90%;
+    background-color: #181a1e;
+    padding: 6px;
+    font-size: 20px;
+    border: 1.4px solid #1976D2;
+    border-radius: 8px;
+    margin: 10px 0;
+}
+
+input {
+    width: 60%;
+    padding: 6px;
+    outline: none;
+    border: 2px solid #1976D2;
+    border-radius: 8px;
+
+}
+
+select {
+    width: 80%;
+    text-align: center;
+    font-size: 14px;
+    padding: 10px 4px;
+    background-color: #f1f1f2;
+    color: #FF5722;
+    outline: none;
+    font-weight: 800;
+    border: 2px #FF5722 solid;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px 4px #FF5722;
+}
+#finishDialog .prynt button{
+      font-size: 16px;
+    font-weight: 800;
+    width: 54%;
+    background-color: #E91E63;
+}
+.prynt {
+  width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 26px;
+}
+#finishDialog .by {
+  display: flex;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px;
+}
+.py button {
+
+}
