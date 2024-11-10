@@ -6,16 +6,21 @@
     <title>إضافة أو حذف عميل</title>
     <link rel="stylesheet" href="css/three.css">
     <link rel="stylesheet" href="css/add_delete.css">
+    <link rel="stylesheet" href="css/all.min.css">
 </head>
 <body>
 
 <header>
     <h1>إضافة عميل</h1>
     <ul>
-        <li style="background-color: #C2185B;"><a href="index.html">الصفحة الرئيسية</a></li>
-        <li><a href="search.html">البحث عن عميل</a></li>
-        <li><a href="transaction.html">إضافة أو تسديد مبلغ</a></li>
+        <li><a href="index.html">الصفحة الرئيسية</a></li>
+            <li><a href="transaction.html">إضافة أو تسديد مبلغ</a></li>
+        <li><a href="/search.html">  تفاصيل حسابات العملاء </a></li>
+        <li><a href="/workTypes.html"> إدارة  الأعمال</a></li>
+        <li><a href="/products.html"> اضافة معاملات نقد  </a></li>
     </ul>
+<button id="theme-toggle"></button>
+
 </header>
 
 <div class="container add_delete">
@@ -38,23 +43,10 @@
         </form>
     </div>
 
-    <!-- إضافة جدول عرض العملاء والمبالغ المستحقة -->
-<!-- <div class="balance-table  box">
-    <h2>جدول الأرصدة</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>اسم العميل</th>
-                <th>المبلغ المستحق</th>
-            </tr>
-        </thead>
-        <tbody id="balanceTableBody"></tbody>
-    </table>
-
-</div> -->
 
 
-<div class="balance-table tables">
+
+        <div class="balance-table tables">
     <h2>جدول الأرصدة</h2>
     <table>
         <thead>
@@ -67,6 +59,31 @@
         <tbody id="balanceTableBody"></tbody>
     </table>
 </div>
+
+<script>
+
+// تحميل التفضيل عند تحميل الصفحة
+  const toggleButton = document.getElementById('theme-toggle');
+
+// تحميل التفضيل عند تحميل الصفحة
+
+document.addEventListener('DOMContentLoaded', () => {
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  document.body.setAttribute('data-theme', savedTheme);
+  toggleButton.innerHTML = savedTheme === 'dark' ? '<i class="fa-regular fa-sun"></i>' : '<i class="fa-regular fa-moon"></i>';
+});
+
+// تغيير التفضيل عند الضغط على الزر
+toggleButton.addEventListener('click', () => {
+  const currentTheme = document.body.getAttribute('data-theme');
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  document.body.setAttribute('data-theme', newTheme);
+  toggleButton.innerHTML = newTheme === 'dark' ? '<i class="fa-regular fa-sun"></i>' : '<i class="fa-regular fa-moon"></i> ';
+  localStorage.setItem('theme', newTheme);
+});
+
+
+</script>
 
 
 <script>
@@ -84,15 +101,16 @@ document.getElementById('addCustomerForm').addEventListener('submit', function(e
     })
     .then(response => response.json())
     .then(data => {
-        alert(data.message);
+        window.electronAPI.showDialogMessage(data.message); // استبدال alert بـ showDialogMessage
     })
     .catch(error => {
-        console.error('حدث خطأ:', error);
-        alert('حدث خطأ أثناء إضافة العميل');
+        // console.error('حدث خطأ:', error);
+        window.electronAPI.showDialogMessage('حدث خطأ أثناء إضافة العميل'); // استبدال alert بـ showDialogMessage
     });
 });
 
-// حذف عميل
+
+ // حذف عميل
 document.getElementById('deleteCustomerForm').addEventListener('submit', function(event) {
     event.preventDefault();
     const name = document.getElementById('deleteName').value.trim();
@@ -106,11 +124,11 @@ document.getElementById('deleteCustomerForm').addEventListener('submit', functio
     })
     .then(response => response.json())
     .then(data => {
-        alert(data.message);
+        window.electronAPI.showDialogMessage(data.message); // استبدال alert بـ showDialogMessage
     })
     .catch(error => {
-        console.error('حدث خطأ:', error);
-        alert('حدث خطأ أثناء حذف العميل');
+        // console.error('حدث خطأ:', error);
+        window.electronAPI.showDialogMessage('حدث خطأ أثناء حذف العميل');
     });
 });
 
@@ -140,51 +158,14 @@ document.getElementById('deleteName').addEventListener('input', function () {
     }
 });
 
-// جلب بيانات العملاء وعرضها في الجدول
-// document.addEventListener('DOMContentLoaded', function() {
-//     fetch('/clients')
-//         .then(response => response.json())
-//         .then(clients => {
-//             if (!Array.isArray(clients)) {
-//                 console.error('Unexpected response format:', clients);
-//                 alert('لم يتم جلب بيانات العملاء بالشكل المتوقع.');
-//                 return;
-//             }
-            
-//             const tbody = document.getElementById('clientTable').querySelector('tbody');
-//             tbody.innerHTML = ''; // مسح أي بيانات موجودة
 
-//             clients.forEach(client => {
-//                 const row = document.createElement('tr');
-//                 row.innerHTML = `
-//                     <td>${client.name}</td>
-//                     <td>${client.amount_due}</td>
-//                 `;
-//                 tbody.appendChild(row);
-//             });
-//         })
-//         .catch(error => console.error('Error fetching client data:', error));
-// });
 
 
 
 </script>
 
 
-<!-- <script>
-    // جلب الأرصدة وعرضها في الجدول
-    fetch('/api/get-client-balances')
-        .then(response => response.json())
-        .then(balances => {
-            const tableBody = document.getElementById('balanceTableBody');
-            balances.forEach(client => {
-                const row = document.createElement('tr');
-                row.innerHTML = `<td>${client.client_name}</td><td>${client.balance}</td>`;
-                tableBody.appendChild(row);
-            });
-        })
-        .catch(error => console.error('Error fetching client data:', error));
-</script> -->
+
 
 
 <script>

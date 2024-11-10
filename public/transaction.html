@@ -6,6 +6,7 @@
     <title>إضافة أو تسديد مبلغ</title>
     <link rel="stylesheet" href="css/three.css">
     <link rel="stylesheet" href="css/transaction.css">
+    <link rel="stylesheet" href="css/all.min.css">
 </head>
 <body>
     <header>
@@ -13,8 +14,12 @@
         <ul>
             <li><a href="index.html">الصفحة الرئيسية</a></li>
             <li><a href="add_delete.html">إضافة أو حذف عميل</a></li>
-            <li><a href="search.html">البحث عن عميل</a></li>
+        <li><a href="/search.html">  تفاصيل حسابات العملاء </a></li>
+        <li><a href="/workTypes.html"> إدارة  الأعمال</a></li>
+        <li><a href="/products.html"> اضافة معاملات نقد  </a></li>
         </ul>
+<button id="theme-toggle"></button>
+
     </header>
 
     <div class="container transaction">
@@ -52,7 +57,30 @@
             </form>
         </div>
     </div>
+<script>
 
+// تحميل التفضيل عند تحميل الصفحة
+  const toggleButton = document.getElementById('theme-toggle');
+
+// تحميل التفضيل عند تحميل الصفحة
+
+document.addEventListener('DOMContentLoaded', () => {
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  document.body.setAttribute('data-theme', savedTheme);
+  toggleButton.innerHTML = savedTheme === 'dark' ? '<i class="fa-regular fa-sun"></i>' : '<i class="fa-regular fa-moon"></i>';
+});
+
+// تغيير التفضيل عند الضغط على الزر
+toggleButton.addEventListener('click', () => {
+  const currentTheme = document.body.getAttribute('data-theme');
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  document.body.setAttribute('data-theme', newTheme);
+  toggleButton.innerHTML = newTheme === 'dark' ? '<i class="fa-regular fa-sun"></i>' : '<i class="fa-regular fa-moon"></i> ';
+  localStorage.setItem('theme', newTheme);
+});
+
+
+</script>
 
 <script>
 

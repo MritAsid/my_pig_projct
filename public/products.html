@@ -14,40 +14,63 @@
         #dialogOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 500; }
     </style>
     <link rel="stylesheet" href="css/three.css">
+    <link rel="stylesheet" href="css/all.min.css">
     <link rel="stylesheet" href="css/work.css">
 </head>
+<!-- MyElectronApp -->
 <body>
        <header>
     <h1>معاملات مالية للعملاء</h1>
 
         <ul>
-            <li><a href="index.html">الصفحة الرئيسية</a></li>
+                 <li><a href="index.html">الصفحة الرئيسية</a></li>
             <li><a href="add_delete.html">إضافة/حذف عميل</a></li>
             <li><a href="transaction.html">إضافة أو تسديد مبلغ</a></li>
+        <li><a href="search.html">  تفاصيل حسابات العملاء </a></li>
+        <li><a href="workTypes.html"> إدارة  الأعمال</a></li>
         </ul>
+<button id="theme-toggle"></button>
+
     </header>
 
-        <div class="container twostail  work">
+        <div class="container twostail  payy">
         <div class="box">
-        
-   
-    <label>نوع العمل:</label>
-    <input type="text" id="workTypeInput" autocomplete="off">
+<!-- <div class="form">
+        <label>نوع العمل<p>:</p></label>
     <div class="lister">
-         <div id="autocomplete-list" class="autocomplete"></div>
+    <input type="text" id="workTypeInput" autocomplete="off">
+        <div id="autocomplete-list" class="autocomplete"></div>
     </div>
   <div class="neno">
-      <label>السعر:</label>
+      <label>السعر<p>:</p></label>
     <input type="number" id="price" readonly>
   </div>
     
-    <label>الكمية:</label>
+    <label>الكمية<p>:</p></label>
     <input type="number" id="quantityInput">
     
     <button onclick="addRow()">إضافة</button>
+
+    
+</div>         -->
+   
+
+    <div class="form">
+        <label>نوع العمل<p>:</p></label>
+        <div class="lister">
+            <input type="text" id="workTypeInput" autocomplete="off">
+            <div id="autocomplete-list" class="autocomplete"></div>
+        </div>
+        <div class="neno">
+            <label>السعر<p>:</p></label>
+            <input type="number" id="price" readonly>
+        </div>
+        <label>الكمية<p>:</p></label>
+        <input type="number" id="quantityInput">
     <button onclick="showFinishDialog()">إنهاء</button>
 
-    </div>
+    </div> 
+</div>
         <div class="tables">
 
     <table id="invoiceTable">
@@ -60,11 +83,7 @@
             </tr>
         </thead>
         <tbody></tbody>
-        <tfoot>
-            <tr>
-                <th> المبلغ النهائي</th>
-            </tr>
-        </tfoot>
+
     </table>
     </div>
     </div>
@@ -73,9 +92,11 @@
     <div id="finishDialog">
         <h3>إدخال بيانات العميل</h3>
         <label>اسم العميل:</label>
-        <input type="text" id="customerName">
+  <div class="lister">
+          <input type="text" id="customerName">
         <div id="autocomplete"></div>
         
+  </div>
         <label>طريقة الدفع:</label>
         <select id="paymentMethod">
             <option value="add">أجل</option>
@@ -92,7 +113,25 @@
         <button onclick="closeDialog()">إلغاء</button>
       </div>
     </div>
-    
+
+    <script>
+  const toggleButton = document.getElementById('theme-toggle');
+// تحميل التفضيل عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', () => {
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  document.body.setAttribute('data-theme', savedTheme);
+  toggleButton.innerHTML = savedTheme === 'dark' ? '<i class="fa-regular fa-sun"></i>' : '<i class="fa-regular fa-moon"></i>';
+});
+// تغيير التفضيل عند الضغط على الزر
+toggleButton.addEventListener('click', () => {
+  const currentTheme = document.body.getAttribute('data-theme');
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  document.body.setAttribute('data-theme', newTheme);
+  toggleButton.innerHTML = newTheme === 'dark' ? '<i class="fa-regular fa-sun"></i>' : '<i class="fa-regular fa-moon"></i> ';
+  localStorage.setItem('theme', newTheme);
+});
+</script>
+
     <script>
         let workTypes = []; // تخزين أنواع الأعمال
 
@@ -140,12 +179,25 @@
                 <td>${total.toFixed(2)}</td>
             `;
 
-            document.getElementById('invoiceTable').querySelector('tbody').appendChild(row);
+document.getElementById('invoiceTable').querySelector('tbody').appendChild(row);
+
+            // إعادة تعيين الحقول
             document.getElementById('workTypeInput').value = '';
             document.getElementById('quantityInput').value = '';
             document.getElementById('price').value = '';
+            
+            // إعادة المؤشر إلى حقل "نوع العمل"
+            document.getElementById('workTypeInput').focus();
         }
 
+        // إضافة حدث عند الضغط على Enter في حقل الكمية
+        document.getElementById('quantityInput').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                addRow();
+            }
+        });
+   
         // عرض مربع الحوار عند الضغط على زر "إنهاء"
         function showFinishDialog() {
             document.getElementById('dialogOverlay').style.display = 'block';
@@ -158,14 +210,12 @@
             document.getElementById('finishDialog').style.display = 'none';
         }
 
-    
     </script>
 
      <!-- وظيفة الإكمال التلقائي -->
 
    <script>
-
-            let selectedTransactionIndex = null;
+    let selectedTransactionIndex = null;
         // وظيفة الإكمال التلقائي
         document.getElementById('customerName').addEventListener('input', function () {
             const query = this.value.toLowerCase();
@@ -196,67 +246,110 @@
                     .catch(error => console.error('Error fetching customers:', error));
             }
         });
-
 </script>
 
-     <!-- إنهاء الفاتورة وتحديد طريقة الدفع -->
+<!-- إنهاء الفاتورة وتحديد طريقة الدفع -->
 
 <script>
     // إنهاء الفاتورة وتحديد طريقة الدفع
     async function finishInvoice() {
-        const customerName = document.getElementById('customerName').value;
+        const customerName = document.getElementById('customerName').value.trim();
         const paymentMethod = document.getElementById('paymentMethod').value;
         const rows = document.querySelectorAll('#invoiceTable tbody tr');
 
         // التحقق من وجود اسم العميل
         if (!customerName) {
-            alert("يرجى إدخال اسم العميل.");
+            window.electronAPI.showDialogMessage("يرجى إدخال اسم العميل.");
             return;
         }
 
-        // إرسال كل صف كعملية إلى السيرفر
-        for (let row of rows) {
-            const workType = row.cells[0].textContent; // نوع العمل من الصف
-            const price = parseFloat(row.cells[1].textContent);
-            const quantity = parseInt(row.cells[2].textContent);
-            const totalAmount = price * quantity; // المبلغ الإجمالي من كل صف
-            const transactionType = paymentMethod;
-
-            // إرسال بيانات الصف كعملية منفصلة إلى قاعدة البيانات
-            await fetch('/transaction', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name: customerName,
-                    amount: totalAmount,
-                    details: workType,
-                    transactionType: transactionType
-                })
-            }).then(response => response.json())
-              .then(data => console.log("تمت الإضافة:", data))
-              .catch(error => console.error("خطأ أثناء الإرسال:", error));
+        // التحقق من وجود العميل في قاعدة البيانات
+        let customerExists = false;
+        try {
+            const response = await fetch(`/check-customer?name=${encodeURIComponent(customerName)}`);
+            const data = await response.json();
+            customerExists = data.exists;
+        } catch (error) {
+            console.error("خطأ في التحقق من العميل:", error);
+            window.electronAPI.showDialogMessage("حدث خطأ أثناء التحقق من العميل. الرجاء المحاولة مرة أخرى.");
+            return;
         }
 
-        // عرض رسالة النجاح وتحديث واجهة المستخدم
-        alert(`تم حفظ الفاتورة للعميل ${customerName}`);
-        closeDialog(); // إغلاق مربع الحوار بعد إدخال البيانات
+        if (!customerExists) {
+            // إذا لم يكن العميل موجودًا، عرض خيار إضافة العميل أو طباعة الفاتورة فقط
+            const userChoice = confirm(`اسم العميل "${customerName}" غير موجود في قائمة العملاء. هل ترغب في إضافة الاسم؟`);
+            
+            if (userChoice) {
+                try {
+                    const addResponse = await fetch('/add-customer', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ name: customerName })
+                    });
+                    const addData = await addResponse.json();
+                    console.log("تمت إضافة العميل:", addData);
+                } catch (error) {
+                    console.error("خطأ أثناء إضافة العميل:", error);
+                    window.electronAPI.showDialogMessage("حدث خطأ أثناء إضافة العميل. الرجاء المحاولة مرة أخرى.");
+                    return;
+                }
+            } else {
+                // إذا اختار المستخدم عدم إضافة العميل، طباعة الفاتورة فقط
+                printInvoice();
+                return;
+            }
+        }
+
+        // إذا كان العميل موجودًا أو تمت إضافته، قم بإرسال كل صف كعملية إلى السيرفر
+        for (let row of rows) {
+            const workType = row.cells[0].textContent;
+            const price = parseFloat(row.cells[1].textContent);
+            const quantity = parseInt(row.cells[2].textContent);
+            const totalAmount = price * quantity;
+            const transactionType = paymentMethod;
+
+            // تعديل التفاصيل لتشمل النوع والكمية
+            const details = `${workType} - الكمية: ${quantity}`;
+
+            try {
+                const transactionResponse = await fetch('/transaction', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: customerName,
+                        amount: totalAmount,
+                        details: details,
+                        transactionType: transactionType
+                    })
+                });
+                const transactionData = await transactionResponse.json();
+                console.log("تمت الإضافة:", transactionData);
+            } catch (error) {
+                console.error("خطأ أثناء الإرسال:", error);
+                window.electronAPI.showDialogMessage("حدث خطأ أثناء إرسال البيانات. الرجاء المحاولة مرة أخرى.");
+                return;
+            }
+        }
+
+        // عرض رسالة النجاح
+        window.electronAPI.showDialogMessage(`تم حفظ الفاتورة للعميل ${customerName}`);
+        closeDialog();
+    }
+
+    // دالة طباعة الفاتورة
+    function printInvoice() {
+        window.electronAPI.printInvoice();
     }
 </script>
 
 
 
-
-
-
-
-
-
-
-
-<script src="libls/jspdf.umd.min.js"></script>
-<script src="libls/jspdf.plugin.autotable.min.js"></script>
+<script src="lib/jspdf.umd.min.js"></script>
+<script src="lib/jspdf.plugin.autotable.min.js"></script>
 
 
 <!-- Font Ar -->
@@ -374,85 +467,21 @@ pdf.setFontSize(12);
 
         // حفظ ملف PDF
         pdf.save(`فاتورة_${customerName}_${formattedDate}.pdf`);
+        // حفظ PDF وفتح نافذة جديدة لعرضه
+//   const pdfBlob = doc.output("blob");
+//   const pdfUrl = URL.createObjectURL(pdfBlob);
+//          const pdfWindow = window.open();
+//   pdfWindow.document.write(`
+//     <html>
+//       <body style="text-align: center;">
+//         <embed src="${pdfUrl}" type="application/pdf" width="100%" height="95%" />
+//         <br/>
+//       </body>
+//     </html>
+//   `);
     }
 </script>
 
-
-    <!-- <script>
-
-            closeDialog(); // إغلاق مربع الحوار بعد إدخال البيانات
-
-             fetch('/transaction', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name: customerName,
-                    amount:row.cells[3],
-                    details: row.cells[0],
-                    transactionType: paymentMethod,
-                })
-            })
-            .then(response => response.json())
-        document.getElementById('transactionForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            const name = customerName;
-            const amount = document.getElementById('amount').value;
-            const details = document.getElementById('details').value;
-            const transactionType = document.getElementById('transactionType').value;
-
-            fetch('/transaction', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name: name,
-                    amount: amount,
-                    details: details,
-                    transactionType: transactionType
-                })
-            })
-            .then(response => response.json())
-            
-            
-            
-            .then(data => {
-                if (data.success) {
-                    // document.getElementById('message').textContent = 'تم حفظ العملية بنجاح!';
-                    alert('تم حفظ العملية بنجاح!')
-                } else {
-                    // document.getElementById('message').textContent = 'حدث خطأ أثناء حفظ العملية.';
-                    alert('حدث خطأ أثناء حفظ العملية.')
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('message').textContent = 'حدث خطأ أثناء الاتصال بالخادم.';
-            });
-        });
-    </script> -->
 </body>
 </body>
 </html>
-
-
-
-
-
-
-            <!-- fetch('/transaction', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name:  الاسم,
-                    amount:  = المبلغ الإجمالي من كل صف,
-                    details:  نوع العمل من كل صف,
-                    transactionType:  نوع العملية
-                })
-            })
-            .then(response => response.json()) -->

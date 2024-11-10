@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة النسخ الاحتياطية</title>
+    <style>
+  
+
+    </style>
+    <link rel="stylesheet" href="css/all.min.css">
+    <link rel="stylesheet" href="css/three.css">
+    <link rel="stylesheet" href="css/backup.css">
+</head>
+<body>
+<header>
+        <h1>إدارة النسخ الاحتياطية</h1>
+
+    <ul>
+        <li><a href="index.html">الصفحة الرئيسية</a></li>
+            <li><a href="transaction.html">إضافة أو تسديد مبلغ</a></li>
+        <li><a href="/search.html">  تفاصيل حسابات العملاء </a></li>
+        <li><a href="/workTypes.html"> إدارة  الأعمال</a></li>
+        <li><a href="/products.html"> اضافة معاملات نقد  </a></li>
+    </ul>
+<button id="theme-toggle"></button>
+
+</header>
+<div class="container backup">
+<div class="box">
+    <input type="file" id="backupFile" style="display: none;" accept=".sqlite">
+
+    <button onclick="createBackup()">إنشاء نسخة احتياطية</button>
+    <button onclick="document.getElementById('backupFile').click()">استيراد نسخة احتياطية</button>
+</div>
+</div>
+    
+<script>
+
+// تحميل التفضيل عند تحميل الصفحة
+  const toggleButton = document.getElementById('theme-toggle');
+
+// تحميل التفضيل عند تحميل الصفحة
+
+document.addEventListener('DOMContentLoaded', () => {
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  document.body.setAttribute('data-theme', savedTheme);
+  toggleButton.innerHTML = savedTheme === 'dark' ? '<i class="fa-regular fa-sun"></i>' : '<i class="fa-regular fa-moon"></i>';
+});
+
+// تغيير التفضيل عند الضغط على الزر
+toggleButton.addEventListener('click', () => {
+  const currentTheme = document.body.getAttribute('data-theme');
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  document.body.setAttribute('data-theme', newTheme);
+  toggleButton.innerHTML = newTheme === 'dark' ? '<i class="fa-regular fa-sun"></i>' : '<i class="fa-regular fa-moon"></i> ';
+  localStorage.setItem('theme', newTheme);
+});
+
+
+</script>
+    <script>
+        // دالة لإنشاء النسخة الاحتياطية
+        function createBackup() {
+            fetch('/api/backup')
+                .then(response => response.json())
+                .then(data => {
+                    window.electronAPI.showDialogMessage(data.message);
+                })
+                .catch(error => {
+                    console.error('Error creating backup:', error);
+                    alert('حدث خطأ أثناء إنشاء النسخة الاحتياطية');
+                });
+        }
+
+        // دالة لاستيراد النسخة الاحتياطية باستخدام FormData
+        document.getElementById('backupFile').addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const formData = new FormData();
+                formData.append('backupFile', file);
+
+                fetch('/api/restore', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    window.electronAPI.showDialogMessage(data.message);
+                })
+                .catch(error => {
+                    console.error('Error restoring backup:', error);
+                    alert('حدث خطأ أثناء استيراد النسخة الاحتياطية');
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
